@@ -1,13 +1,23 @@
-# Welcome to Dissect!
-- [master](https://github.com/jakubledl/dissect/tree/master) [![build status](https://travis-ci.org/jakubledl/dissect.png?branch=master)](https://travis-ci.org/jakubledl/dissect) - this branch always contains the last stable version.
-- [develop](https://github.com/jakubledl/dissect) [![build status](https://travis-ci.org/jakubledl/dissect.png?branch=develop)](https://travis-ci.org/jakubledl/dissect) - the unstable development branch.
+<h1 align="center">Welcome to Dissect!</h1>
+<h2 align="center">Dissect is a set of tools for lexical and syntactical analysis written in pure PHP</h2>
 
-Dissect is a set of tools for lexical and syntactical analysis written
-in pure PHP.
+<p align="center">
+  <!-- Master build status -->
+  <a href="../../actions/workflows/php-tests.yml" target="_blank">
+    <img alt="Build Status" src="https://img.shields.io/github/workflow/status/WalterWoshid/dissect-php8/PHP%20Tests/master?label=Master%20Build"/>
+  </a>
+  
+  <!-- Develop build status -->
+  <a href="../../actions/workflows/php-tests.yml" target="_blank">
+    <img alt="Build Status" src="https://img.shields.io/github/workflow/status/WalterWoshid/dissect-php8/PHP%20Tests/develop?label=Develop%20Build"/>
+  </a>
+</p>
+
+
 
 Documentation?
 --------------
 
 [Here][docs].
 
-[docs]: https://github.com/jakubledl/dissect/blob/master/docs/index.md
+[docs]: docs/index.md
