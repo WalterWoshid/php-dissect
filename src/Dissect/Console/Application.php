@@ -22,12 +22,12 @@ class Application extends BaseApplication
         parent::__construct('Dissect', $version);
     }
 
-    protected function getCommandName(InputInterface $input)
+    protected function getCommandName(InputInterface $input): string
     {
         return 'dissect';
     }
 
-    protected function getDefaultCommands()
+    protected function getDefaultCommands(): array
     {
         $default = parent::getDefaultCommands();
         $default[] = new Command\DissectCommand();
@@ -35,12 +35,12 @@ class Application extends BaseApplication
         return $default;
     }
 
-    public function getDefinition()
+    public function getDefinition(): InputDefinition
     {
-        return new InputDefinition(array(
+        return new InputDefinition([
             new InputOption('--help',    '-h', InputOption::VALUE_NONE, 'Display this help message.'),
             new InputOption('--verbose', '-v', InputOption::VALUE_NONE, 'Increase verbosity of exceptions.'),
             new InputOption('--version', '-V', InputOption::VALUE_NONE, 'Display version information.'),
-        ));
+        ]);
     }
 }

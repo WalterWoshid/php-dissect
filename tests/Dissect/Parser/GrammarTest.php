@@ -2,13 +2,13 @@
 
 namespace Dissect\Parser;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class GrammarTest extends PHPUnit_Framework_TestCase
+class GrammarTest extends TestCase
 {
-    protected $grammar;
+    protected ExampleGrammar $grammar;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->grammar = new ExampleGrammar();
     }

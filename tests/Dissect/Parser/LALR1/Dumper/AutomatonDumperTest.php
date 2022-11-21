@@ -3,13 +3,13 @@
 namespace Dissect\Parser\LALR1\Dumper;
 
 use Dissect\Parser\LALR1\Analysis\Analyzer;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class AutomatonDumperTest extends PHPUnit_Framework_TestCase
+class AutomatonDumperTest extends TestCase
 {
-    protected $dumper;
+    protected AutomatonDumper $dumper;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $analyzer = new Analyzer();
         $automaton = $analyzer->analyze(new ExampleGrammar())->getAutomaton();

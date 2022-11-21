@@ -14,24 +14,24 @@ use Dissect\Parser\Grammar;
 class DebugTableDumper implements TableDumper
 {
     /**
-     * @var \Dissect\Parser\Grammar
+     * @var Grammar
      */
-    protected $grammar;
+    protected Grammar $grammar;
 
     /**
-     * @var \Dissect\Parser\LALR1\Dumper\StringWriter
+     * @var StringWriter
      */
-    protected $writer;
+    protected StringWriter $writer;
 
     /**
      * @var boolean
      */
-    protected $written = false;
+    protected bool $written = false;
 
     /**
      * Constructor.
      *
-     * @param \Dissect\Parser\Grammar $grammar The grammar of this parse table.
+     * @param Grammar $grammar The grammar of this parse table.
      */
     public function __construct(Grammar $grammar)
     {
@@ -42,7 +42,7 @@ class DebugTableDumper implements TableDumper
     /**
      * {@inheritDoc}
      */
-    public function dump(array $table)
+    public function dump(array $table): string
     {
         // for readability
         ksort($table['action']);
@@ -81,14 +81,14 @@ class DebugTableDumper implements TableDumper
     {
         $this->writer->writeLine('<?php');
         $this->writer->writeLine();
-        $this->writer->writeLine('return array(');
+        $this->writer->writeLine('return [');
         $this->writer->indent();
-        $this->writer->writeLine("'action' => array(");
+        $this->writer->writeLine("'action' => [");
     }
 
     protected function writeState($n, array $state)
     {
-        $this->writer->writeLine((string)$n . ' => array(');
+        $this->writer->writeLine($n . ' => [');
         $this->writer->indent();
 
         foreach ($state as $trigger => $action) {
@@ -97,7 +97,7 @@ class DebugTableDumper implements TableDumper
         }
 
         $this->writer->outdent();
-        $this->writer->writeLine('),');
+        $this->writer->writeLine('],');
     }
 
     protected function writeAction($trigger, $action)
@@ -140,14 +140,14 @@ class DebugTableDumper implements TableDumper
 
     protected function writeMiddle()
     {
-        $this->writer->writeLine('),');
+        $this->writer->writeLine('],');
         $this->writer->writeLine();
-        $this->writer->writeLine("'goto' => array(");
+        $this->writer->writeLine("'goto' => [");
     }
 
     protected function writeGoto($n, array $map)
     {
-        $this->writer->writeLine((string)$n . ' => array(');
+        $this->writer->writeLine($n . ' => [');
         $this->writer->indent();
 
         foreach ($map as $sym => $dest) {
@@ -167,13 +167,13 @@ class DebugTableDumper implements TableDumper
         }
 
         $this->writer->outdent();
-        $this->writer->writeLine('),');
+        $this->writer->writeLine('],');
     }
 
     protected function writeFooter()
     {
-        $this->writer->writeLine('),');
+        $this->writer->writeLine('],');
         $this->writer->outdent();
-        $this->writer->writeLine(');');
+        $this->writer->writeLine('];');
     }
 }

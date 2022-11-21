@@ -2,9 +2,9 @@
 
 namespace Dissect\Parser\LALR1\Analysis\KernelSet;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class KernelSetTest extends PHPUnit_Framework_TestCase
+class KernelSetTest extends TestCase
 {
     /**
      * @test
@@ -26,20 +26,20 @@ class KernelSetTest extends PHPUnit_Framework_TestCase
     {
         $set = new KernelSet();
 
-        $this->assertEquals(0, $set->insert(array(
-            array(2, 1),
-        )));
+        $this->assertEquals(0, $set->insert([
+            [2, 1],
+        ]));
 
-        $this->assertEquals(1, $set->insert(array(
-            array(2, 2),
-        )));
+        $this->assertEquals(1, $set->insert([
+            [2, 2],
+        ]));
 
-        $this->assertEquals(2, $set->insert(array(
-            array(1, 1),
-        )));
+        $this->assertEquals(2, $set->insert([
+            [1, 1],
+        ]));
 
-        $this->assertEquals(0, $set->insert(array(
-            array(2, 1),
-        )));
+        $this->assertEquals(0, $set->insert([
+            [2, 1],
+        ]));
     }
 }

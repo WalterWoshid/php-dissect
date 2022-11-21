@@ -1,3 +1,10 @@
-vendor/
+# IDE's
+/.idea/
+
+# Composer
+/vendor/
 composer.phar
 composer.lock
+
+# PhpUnit
+.phpunit.result.cache

@@ -3,16 +3,16 @@
 namespace Dissect\Parser\LALR1\Analysis;
 
 use Dissect\Parser\Rule;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class ItemTest extends PHPUnit_Framework_TestCase
+class ItemTest extends TestCase
 {
     /**
      * @test
      */
     public function getActiveComponentShouldReturnTheComponentAboutToBeEncountered()
     {
-        $item = new Item(new Rule(1, 'A', array('a', 'b', 'c')), 1);
+        $item = new Item(new Rule(1, 'A', ['a', 'b', 'c']), 1);
 
         $this->assertEquals('b', $item->getActiveComponent());
     }
@@ -22,10 +22,10 @@ class ItemTest extends PHPUnit_Framework_TestCase
      */
     public function itemShouldBeAReduceItemIfAllComponentsHaveBeenEncountered()
     {
-        $item = new Item(new Rule(1, 'A', array('a', 'b', 'c')), 1);
+        $item = new Item(new Rule(1, 'A', ['a', 'b', 'c']), 1);
         $this->assertFalse($item->isReduceItem());
 
-        $item = new Item(new Rule(1, 'A', array('a', 'b', 'c')), 3);
+        $item = new Item(new Rule(1, 'A', ['a', 'b', 'c']), 3);
         $this->assertTrue($item->isReduceItem());
     }
 
@@ -34,8 +34,8 @@ class ItemTest extends PHPUnit_Framework_TestCase
      */
     public function itemShouldPumpLookaheadIntoConnectedItems()
     {
-        $item1 = new Item(new Rule(1, 'A', array('a', 'b', 'c')), 1);
-        $item2 = new Item(new Rule(1, 'A', array('a', 'b', 'c')), 2);
+        $item1 = new Item(new Rule(1, 'A', ['a', 'b', 'c']), 1);
+        $item2 = new Item(new Rule(1, 'A', ['a', 'b', 'c']), 2);
 
         $item1->connect($item2);
         $item1->pump('d');
@@ -48,16 +48,15 @@ class ItemTest extends PHPUnit_Framework_TestCase
      */
     public function itemShouldPumpTheSameLookaheadOnlyOnce()
     {
-        $item1 = new Item(new Rule(1, 'A', array('a', 'b', 'c')), 1);
+        $item1 = new Item(new Rule(1, 'A', ['a', 'b', 'c']), 1);
 
-        $item2 = $this->getMock(
-            'Dissect\\Parser\\LALR1\\Analysis\\Item',
-            array('pump'),
-            array(
-                new Rule(1, 'A', array('a', 'b', 'c')),
+        // Refactor item2 for phpunit 9
+        $item2 = $this->getMockBuilder(Item::class)
+            ->setConstructorArgs([
+                new Rule(1, 'A', ['a', 'b', 'c']),
                 2,
-            )
-        );
+            ])
+            ->getMock();
 
         $item2->expects($this->once())
             ->method('pump')
@@ -74,8 +73,8 @@ class ItemTest extends PHPUnit_Framework_TestCase
      */
     public function getUnrecognizedComponentsShouldReturnAllComponentAfterTheDottedOne()
     {
-        $item = new Item(new Rule(1, 'A', array('a', 'b', 'c')), 1);
+        $item = new Item(new Rule(1, 'A', ['a', 'b', 'c']), 1);
 
-        $this->assertEquals(array('c'), $item->getUnrecognizedComponents());
+        $this->assertEquals(['c'], $item->getUnrecognizedComponents());
     }
 }

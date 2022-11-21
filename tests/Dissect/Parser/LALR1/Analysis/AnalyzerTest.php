@@ -5,11 +5,11 @@ namespace Dissect\Parser\LALR1\Analysis;
 use Dissect\Parser\LALR1\Analysis\Exception\ReduceReduceConflictException;
 use Dissect\Parser\Grammar;
 use Dissect\Parser\Parser;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class AnalyzerTest extends PHPUnit_Framework_TestCase
+class AnalyzerTest extends TestCase
 {
-    protected $analyzer = null;
+    protected ?Analyzer $analyzer = null;
 
     /**
      * @test
@@ -152,7 +152,7 @@ class AnalyzerTest extends PHPUnit_Framework_TestCase
         $grammar->start('S');
 
         try {
-            $result = $this->getAnalysisResult($grammar);
+            $this->getAnalysisResult($grammar);
             $this->fail('Expected an exception warning of a reduce/reduce conflict.');
         } catch(ReduceReduceConflictException $e) {
             $this->assertEquals(3, $e->getStateNumber());
@@ -211,12 +211,12 @@ class AnalyzerTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(Grammar::SHIFT, $conflict['resolution']);
     }
 
-    protected function getAnalysisResult(Grammar $grammar)
+    protected function getAnalysisResult(Grammar $grammar): AnalysisResult
     {
         return $this->getAnalyzer()->analyze($grammar);
     }
 
-    protected function getAnalyzer()
+    protected function getAnalyzer(): Analyzer
     {
         if ($this->analyzer === null) {
             $this->analyzer = new Analyzer();

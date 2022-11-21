@@ -16,5 +16,5 @@ interface TableDumper
      *
      * @return string The resulting string representation of the table.
      */
-    public function dump(array $table);
+    public function dump(array $table): string;
 }

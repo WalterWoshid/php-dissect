@@ -3,7 +3,9 @@
 namespace Dissect\Lexer\TokenStream;
 
 use Countable;
+use Dissect\Lexer\Token;
 use IteratorAggregate;
+use OutOfBoundsException;
 
 /**
  * A common contract for all token stream classes.
@@ -17,14 +19,14 @@ interface TokenStream extends Countable, IteratorAggregate
      *
      * @return int The current position in the stream.
      */
-    public function getPosition();
+    public function getPosition(): int;
 
     /**
      * Retrieves the current token.
      *
-     * @return \Dissect\Lexer\Token The current token.
+     * @return Token The current token.
      */
-    public function getCurrentToken();
+    public function getCurrentToken(): Token;
 
     /**
      * Returns a look-ahead token. Negative values are allowed
@@ -32,45 +34,45 @@ interface TokenStream extends Countable, IteratorAggregate
      *
      * @param int $n The look-ahead.
      *
-     * @throws \OutOfBoundsException If current position + $n is out of range.
+     * @throws OutOfBoundsException If current position + $n is out of range.
      *
-     * @return \Dissect\Lexer\Token The lookahead token.
+     * @return Token The lookahead token.
      */
-    public function lookAhead($n);
+    public function lookAhead(int $n): Token;
 
     /**
      * Returns the token at absolute position $n.
      *
      * @param int $n The position.
      *
-     * @throws \OutOfBoundsException If $n is out of range.
+     * @throws OutOfBoundsException If $n is out of range.
      *
-     * @return \Dissect\Lexer\Token The token at position $n.
+     * @return Token The token at position $n.
      */
-    public function get($n);
+    public function get(int $n): Token;
 
     /**
      * Moves the cursor to the absolute position $n.
      *
      * @param int $n The position.
      *
-     * @throws \OutOfBoundsException If $n is out of range.
+     * @throws OutOfBoundsException If $n is out of range.
      */
-    public function move($n);
+    public function move(int $n);
 
     /**
      * Moves the cursor by $n, relative to the current position.
      *
      * @param int $n The seek.
      *
-     * @throws \OutOfBoundsException If current position + $n is out of range.
+     * @throws OutOfBoundsException If current position + $n is out of range.
      */
-    public function seek($n);
+    public function seek(int $n);
 
     /**
      * Moves the cursor to the next token.
      *
-     * @throws \OutOfBoundsException If at the end of the stream.
+     * @throws OutOfBoundsException If at the end of the stream.
      */
     public function next();
 }

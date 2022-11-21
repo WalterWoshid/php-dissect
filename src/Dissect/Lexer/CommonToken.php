@@ -10,38 +10,22 @@ namespace Dissect\Lexer;
 class CommonToken implements Token
 {
     /**
-     * @var mixed
-     */
-    protected $type;
-
-    /**
-     * @var string
-     */
-    protected $value;
-
-    /**
-     * @var int
-     */
-    protected $line;
-
-    /**
      * Constructor.
      *
      * @param mixed $type The type of the token.
      * @param string $value The token value.
      * @param int $line The line.
      */
-    public function __construct($type, $value, $line)
-    {
-        $this->type = $type;
-        $this->value = $value;
-        $this->line = $line;
-    }
+    public function __construct(
+        protected mixed $type,
+        protected string $value,
+        protected int $line
+    ) {}
 
     /**
      * {@inheritDoc}
      */
-    public function getType()
+    public function getType(): mixed
     {
         return $this->type;
     }
@@ -49,7 +33,7 @@ class CommonToken implements Token
     /**
      * {@inheritDoc}
      */
-    public function getValue()
+    public function getValue(): string
     {
         return $this->value;
     }
@@ -57,7 +41,7 @@ class CommonToken implements Token
     /**
      * {@inheritDoc}
      */
-    public function getLine()
+    public function getLine(): int
     {
         return $this->line;
     }

@@ -21,11 +21,11 @@ class Analyzer
     /**
      * Performs a grammar analysis.
      *
-     * @param \Dissect\Parser\Grammar $grammar The grammar to analyse.
+     * @param Grammar $grammar The grammar to analyse.
      *
-     * @return \Dissect\Parser\LALR1\Analysis\AnalysisResult The result ofthe analysis.
+     * @return AnalysisResult The result of the analysis.
      */
-    public function analyze(Grammar $grammar)
+    public function analyze(Grammar $grammar): AnalysisResult
     {
         $automaton = $this->buildAutomaton($grammar);
         list($parseTable, $conflicts) = $this->buildParseTable($automaton, $grammar);
@@ -36,11 +36,11 @@ class Analyzer
     /**
      * Builds the handle-finding FSA from the grammar.
      *
-     * @param \Dissect\Parser\Grammar $grammar The grammar.
+     * @param Grammar $grammar The grammar.
      *
-     * @return \Dissect\Parser\LALR1\Analysis\Automaton The resulting automaton.
+     * @return Automaton The resulting automaton.
      */
-    protected function buildAutomaton(Grammar $grammar)
+    protected function buildAutomaton(Grammar $grammar): Automaton
     {
         // the eventual automaton
         $automaton = new Automaton();
@@ -59,20 +59,20 @@ class Analyzer
 
         // keeps a list of tokens that need to be pumped
         // through the automaton
-        $pumpings = array();
+        $pumpings = [];
 
         // the item from which the whole automaton
         // is derived
         $initialItem = new Item($grammar->getStartRule(), 0);
 
         // construct the initial state
-        $state = new State($kernelSet->insert(array(
-            array($initialItem->getRule()->getNumber(), $initialItem->getDotIndex()),
-        )), array($initialItem));
+        $state = new State($kernelSet->insert([
+            [$initialItem->getRule()->getNumber(), $initialItem->getDotIndex()],
+        ]), [$initialItem]);
 
         // the initial item automatically has EOF
         // as its lookahead
-        $pumpings[] = array($initialItem, array(Parser::EOF_TOKEN_TYPE));
+        $pumpings[] = [$initialItem, [Parser::EOF_TOKEN_TYPE]];
 
         $queue->enqueue($state);
         $automaton->addState($state);
@@ -83,10 +83,10 @@ class Analyzer
             // items of this state are grouped by
             // the active component to calculate
             // transitions easily
-            $groupedItems = array();
+            $groupedItems = [];
 
             // calculate closure
-            $added = array();
+            $added = [];
             $currentItems = $state->getItems();
             for ($x = 0; $x < count($currentItems); $x++) {
                 $item = $currentItems[$x];
@@ -99,13 +99,13 @@ class Analyzer
                     if ($grammar->hasNonterminal($component)) {
 
                         // calculate lookahead
-                        $lookahead = array();
+                        $lookahead = [];
                         $cs = $item->getUnrecognizedComponents();
 
                         foreach ($cs as $i => $c) {
                             if (!$grammar->hasNonterminal($c)) {
                                 // if terminal, add it and break the loop
-                                $lookahead = Util::union($lookahead, array($c));
+                                $lookahead = Util::union($lookahead, [$c]);
 
                                 break;
                             } else {
@@ -172,7 +172,7 @@ class Analyzer
                             }
 
                             if ($pump) {
-                                $pumpings[] = array($newItem, $lookahead);
+                                $pumpings[] = [$newItem, $lookahead];
                             }
                         }
                     }
@@ -184,13 +184,13 @@ class Analyzer
 
             // calculate transitions
             foreach ($groupedItems as $thisComponent => $theseItems) {
-                $newKernel = array();
+                $newKernel = [];
 
                 foreach ($theseItems as $thisItem) {
-                    $newKernel[] = array(
+                    $newKernel[] = [
                         $thisItem->getRule()->getNumber(),
                         $thisItem->getDotIndex() + 1,
-                    );
+                    ];
                 }
 
                 $num = $kernelSet->insert($newKernel);
@@ -240,21 +240,22 @@ class Analyzer
     /**
      * Encodes the handle-finding FSA as a LR parse table.
      *
-     * @param \Dissect\Parser\LALR1\Analysis\Automaton $automaton
+     * @param Automaton $automaton
+     * @param Grammar $grammar
      *
      * @return array The parse table.
      */
-    protected function buildParseTable(Automaton $automaton, Grammar $grammar)
+    protected function buildParseTable(Automaton $automaton, Grammar $grammar): array
     {
         $conflictsMode = $grammar->getConflictsMode();
-        $conflicts = array();
-        $errors = array();
+        $conflicts = [];
+        $errors = [];
 
         // initialize the table
-        $table = array(
-            'action' => array(),
-            'goto' => array(),
-        );
+        $table = [
+            'action' => [],
+            'goto' => [],
+        ];
 
         foreach ($automaton->getTransitionTable() as $num => $transitions) {
             foreach ($transitions as $trigger => $destination) {
@@ -270,7 +271,7 @@ class Analyzer
 
         foreach ($automaton->getStates() as $num => $state) {
             if (!isset($table['action'][$num])) {
-                $table['action'][$num] = array();
+                $table['action'][$num] = [];
             }
 
             foreach ($state->getItems() as $item) {
@@ -351,12 +352,12 @@ class Analyzer
 
                                 // s/r
                                 if ($conflictsMode & Grammar::SHIFT) {
-                                    $conflicts[] = array(
+                                    $conflicts[] = [
                                         'state' => $num,
                                         'lookahead' => $token,
                                         'rule' => $item->getRule(),
                                         'resolution' => Grammar::SHIFT,
-                                    );
+                                    ];
 
                                     continue;
                                 } else {
@@ -380,27 +381,27 @@ class Analyzer
 
                                     if ($count1 > $count2) {
                                         // original rule is longer
-                                        $resolvedRules = array($originalRule, $newRule);
+                                        $resolvedRules = [$originalRule, $newRule];
 
-                                        $conflicts[] = array(
+                                        $conflicts[] = [
                                             'state' => $num,
                                             'lookahead' => $token,
                                             'rules' => $resolvedRules,
                                             'resolution' => Grammar::LONGER_REDUCE,
-                                        );
+                                        ];
 
                                         continue;
                                     } elseif ($count2 > $count1) {
                                         // new rule is longer
                                         $table['action'][$num][$token] = -$ruleNumber;
-                                        $resolvedRules = array($newRule, $originalRule);
+                                        $resolvedRules = [$newRule, $originalRule];
 
-                                        $conflicts[] = array(
+                                        $conflicts[] = [
                                             'state' => $num,
                                             'lookahead' => $token,
                                             'rules' => $resolvedRules,
                                             'resolution' => Grammar::LONGER_REDUCE,
-                                        );
+                                        ];
 
                                         continue;
                                     }
@@ -409,30 +410,29 @@ class Analyzer
                                 if ($conflictsMode & Grammar::EARLIER_REDUCE) {
                                     if (-$instruction < $ruleNumber) {
                                         // original rule was earlier
-                                        $resolvedRules = array($originalRule, $newRule);
+                                        $resolvedRules = [$originalRule, $newRule];
 
-                                        $conflicts[] = array(
+                                        $conflicts[] = [
                                             'state' => $num,
                                             'lookahead' => $token,
                                             'rules' => $resolvedRules,
                                             'resolution' => Grammar::EARLIER_REDUCE,
-                                        );
+                                        ];
 
-                                        continue;
                                     } else {
                                         // new rule was earlier
                                         $table['action'][$num][$token] = -$ruleNumber;
 
-                                        $conflicts[] = array(
+                                        $conflicts[] = [
                                             'state' => $num,
                                             'lookahead' => $token,
                                             'rules' => $resolvedRules,
                                             'resolution' => Grammar::EARLIER_REDUCE,
-                                        );
-                                        $resolvedRules = array($newRule, $originalRule);
+                                        ];
+                                        $resolvedRules = [$newRule, $originalRule];
 
-                                        continue;
                                     }
+                                    continue;
                                 }
 
                                 // everything failed, throw an exception
@@ -452,7 +452,7 @@ class Analyzer
             }
         }
 
-        return array($table, $conflicts);
+        return [$table, $conflicts];
     }
 
     /**
@@ -462,13 +462,13 @@ class Analyzer
      *
      * @return array Calculated FIRST sets.
      */
-    protected function calculateFirstSets(array $rules)
+    protected function calculateFirstSets(array $rules): array
     {
         // initialize
-        $firstSets = array();
+        $firstSets = [];
 
         foreach (array_keys($rules) as $lhs) {
-            $firstSets[$lhs] = array();
+            $firstSets[$lhs] = [];
         }
 
         do {
@@ -477,10 +477,10 @@ class Analyzer
             foreach ($rules as $lhs => $ruleArray) {
                 foreach ($ruleArray as $rule) {
                     $components = $rule->getComponents();
-                    $new = array();
+                    $new = [];
 
                     if (empty($components)) {
-                        $new = array(Grammar::EPSILON);
+                        $new = [Grammar::EPSILON];
                     } else {
                         foreach ($components as $i => $component) {
                             if (array_key_exists($component, $rules)) {
@@ -509,7 +509,7 @@ class Analyzer
                             } else {
                                 // if terminal, simply add it the the FIRST set
                                 // and we're done
-                                $new = Util::union($new, array($component));
+                                $new = Util::union($new, [$component]);
 
                                 break;
                             }

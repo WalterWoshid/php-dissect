@@ -4,13 +4,13 @@ namespace Dissect\Lexer;
 
 use Dissect\Lexer\Exception\RecognitionException;
 use Dissect\Parser\Parser;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class AbstractLexerTest extends PHPUnit_Framework_TestCase
+class AbstractLexerTest extends TestCase
 {
-    protected $lexer;
+    protected ?StubLexer $lexer = null;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->lexer = new StubLexer();
     }
@@ -56,7 +56,7 @@ class AbstractLexerTest extends PHPUnit_Framework_TestCase
     public function lexShouldThrowAnExceptionOnAnUnrecognizableToken()
     {
         try {
-            $stream = $this->lexer->lex("abcd");
+            $this->lexer->lex("abcd");
             $this->fail('Expected a RecognitionException.');
         } catch (RecognitionException $e) {
             $this->assertEquals(1, $e->getSourceLine());

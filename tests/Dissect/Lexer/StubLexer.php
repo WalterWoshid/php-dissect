@@ -4,7 +4,7 @@ namespace Dissect\Lexer;
 
 class StubLexer extends AbstractLexer
 {
-    protected function extractToken($string)
+    protected function extractToken(string $string): ?Token
     {
         if (strlen(utf8_decode($string)) === 0) {
             return null;
@@ -21,8 +21,8 @@ class StubLexer extends AbstractLexer
         return $token;
     }
 
-    protected function shouldSkipToken(Token $t)
+    protected function shouldSkipToken(Token $token): bool
     {
-        return $t->getType() === 'e';
+        return $token->getType() === 'e';
     }
 }

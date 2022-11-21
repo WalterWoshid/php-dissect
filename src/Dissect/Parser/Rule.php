@@ -9,30 +9,21 @@ namespace Dissect\Parser;
  */
 class Rule
 {
-    /**
-     * @var int
-     */
-    protected $number;
+    protected int $number;
 
-    /**
-     * @var string
-     */
-    protected $name;
+    protected string $name;
 
     /**
      * @var string[]
      */
-    protected $components;
+    protected array $components;
 
     /**
      * @var callable
      */
     protected $callback = null;
 
-    /**
-     * @var int
-     */
-    protected $precedence = null;
+    protected ?int $precedence = null;
 
     /**
      * Constructor.
@@ -41,7 +32,7 @@ class Rule
      * @param string $name The name (lhs) of the rule ("A" in "A -> a b c")
      * @param string[] $components The components of this rule.
      */
-    public function __construct($number, $name, array $components)
+    public function __construct(int $number, string $name, array $components)
     {
         $this->number = $number;
         $this->name = $name;
@@ -53,7 +44,7 @@ class Rule
      *
      * @return int The number of this rule.
      */
-    public function getNumber()
+    public function getNumber(): int
     {
         return $this->number;
     }
@@ -63,7 +54,7 @@ class Rule
      *
      * @return string The name of this rule.
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -73,7 +64,7 @@ class Rule
      *
      * @return string[] The components of this rule.
      */
-    public function getComponents()
+    public function getComponents(): array
     {
         return $this->components;
     }
@@ -84,9 +75,9 @@ class Rule
      *
      * @param int $index The index.
      *
-     * @return string The component at index $index.
+     * @return ?string The component at index $index.
      */
-    public function getComponent($index)
+    public function getComponent(int $index): ?string
     {
         if (!isset($this->components[$index])) {
             return null;
@@ -100,22 +91,22 @@ class Rule
      *
      * @param callable $callback The callback.
      */
-    public function setCallback($callback)
+    public function setCallback(callable $callback): void
     {
         $this->callback = $callback;
     }
 
-    public function getCallback()
+    public function getCallback(): ?callable
     {
         return $this->callback;
     }
 
-    public function getPrecedence()
+    public function getPrecedence(): ?int
     {
         return $this->precedence;
     }
 
-    public function setPrecedence($i)
+    public function setPrecedence($i): void
     {
         $this->precedence = $i;
     }

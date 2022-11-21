@@ -10,8 +10,8 @@ namespace Dissect\Parser\LALR1\Analysis\KernelSet;
  */
 class KernelSet
 {
-    protected $nextNumber = 0;
-    protected $root = null;
+    protected int $nextNumber = 0;
+    protected ?Node $root = null;
 
     /**
      * Inserts a new node in the BST and returns
@@ -23,7 +23,7 @@ class KernelSet
      *
      * @return int The state number.
      */
-    public function insert(array $kernel)
+    public function insert(array $kernel): int
     {
         $kernel = KernelSet::hashKernel($kernel);
 
@@ -65,7 +65,7 @@ class KernelSet
      *
      * @return array The hashed kernel.
      */
-    public static function hashKernel(array $kernel)
+    public static function hashKernel(array $kernel): array
     {
         $kernel = array_map(function ($tuple) {
             list ($car, $cdr) = $tuple;

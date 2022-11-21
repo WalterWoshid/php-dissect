@@ -13,19 +13,19 @@ class Automaton
     /**
      * @var array
      */
-    protected $states = array();
+    protected array $states = [];
 
     /**
      * @var array
      */
-    protected $transitionTable = array();
+    protected array $transitionTable = [];
 
     /**
      * Adds a new automaton state.
      *
-     * @param \Dissect\Parser\LALR1\Analysis\State $state The new state.
+     * @param State $state The new state.
      */
-    public function addState(State $state)
+    public function addState(State $state): void
     {
         $this->states[$state->getNumber()] = $state;
     }
@@ -37,7 +37,7 @@ class Automaton
      * @param string $label The symbol that triggers this transition.
      * @param int $dest The destination state number.
      */
-    public function addTransition($origin, $label, $dest)
+    public function addTransition(int $origin, string $label, int $dest): void
     {
         $this->transitionTable[$origin][$label] = $dest;
     }
@@ -47,9 +47,9 @@ class Automaton
      *
      * @param int $number The state number.
      *
-     * @return \Dissect\Parser\LALR1\Analysis\State The requested state.
+     * @return State The requested state.
      */
-    public function getState($number)
+    public function getState(int $number): State
     {
         return $this->states[$number];
     }
@@ -57,9 +57,11 @@ class Automaton
     /**
      * Does this automaton have a state identified by $number?
      *
+     * @param $number
+     *
      * @return boolean
      */
-    public function hasState($number)
+    public function hasState($number): bool
     {
         return isset($this->states[$number]);
     }
@@ -69,7 +71,7 @@ class Automaton
      *
      * @return array The states of this FSA.
      */
-    public function getStates()
+    public function getStates(): array
     {
         return $this->states;
     }
@@ -79,7 +81,7 @@ class Automaton
      *
      * @return array The transition table.
      */
-    public function getTransitionTable()
+    public function getTransitionTable(): array
     {
         return $this->transitionTable;
     }

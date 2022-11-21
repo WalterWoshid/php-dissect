@@ -2,35 +2,34 @@
 
 namespace Dissect\Lexer;
 
-use Dissect\Lexer\Recognizer\RegexRecognizer;
-use Dissect\Lexer\Recognizer\SimpleRecognizer;
-use PHPUnit_Framework_TestCase;
+use LogicException;
+use PHPUnit\Framework\TestCase;
 
-class StatefulLexerTest extends PHPUnit_Framework_TestCase
+class StatefulLexerTest extends TestCase
 {
-    protected $lexer;
+    protected StatefulLexer $lexer;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->lexer = new StatefulLexer();
     }
 
     /**
      * @test
-     * @expectedException LogicException
-     * @expectedExceptionMessage Define a lexer state first.
      */
     public function addingNewTokenShouldThrowAnExceptionWhenNoStateIsBeingBuilt()
     {
+        $this->expectExceptionMessage("Define a lexer state first.");
+        $this->expectException(LogicException::class);
         $this->lexer->regex('WORD', '/[a-z]+/');
     }
 
     /**
      * @test
-     * @expectedException LogicException
      */
     public function anExceptionShouldBeThrownOnLexingWithoutAStartingState()
     {
+        $this->expectException(LogicException::class);
         $this->lexer->state('root');
         $this->lexer->lex('foo');
     }
@@ -40,14 +39,16 @@ class StatefulLexerTest extends PHPUnit_Framework_TestCase
      */
     public function theStateMechanismShouldCorrectlyPushAndPopStatesFromTheStack()
     {
+        /** @noinspection PhpPossiblePolymorphicInvocationInspection */
         $this->lexer->state('root')
             ->regex('WORD', '/[a-z]+/')
             ->regex('WS', "/[ \r\n\t]+/")
             ->token('"')->action('string')
             ->skip('WS');
 
+        /** @noinspection PhpPossiblePolymorphicInvocationInspection */
         $this->lexer->state('string')
-            ->regex('STRING_CONTENTS', '/(\\\\"|[^"])*/')
+            ->regex('STRING_CONTENTS', '/(\\\\"|[^"])+/')
             ->token('"')->action(StatefulLexer::POP_STATE);
 
         $this->lexer->start('root');

@@ -17,12 +17,12 @@ class SimpleLexer extends AbstractLexer
     /**
      * @var array
      */
-    protected $skipTokens = array();
+    protected array $skipTokens = [];
 
     /**
-     * @var array
+     * @var SimpleRecognizer[]
      */
-    protected $recognizers = array();
+    protected array $recognizers = [];
 
     /**
      * Adds a new token definition. If given only one argument,
@@ -30,11 +30,11 @@ class SimpleLexer extends AbstractLexer
      * identical.
      *
      * @param string $type The token type.
-     * @param string $value The value to be recognized.
+     * @param string|null $value The value to be recognized.
      *
-     * @return \Dissect\Lexer\SimpleLexer This instance for fluent interface.
+     * @return SimpleLexer This instance for fluent interface.
      */
-    public function token($type, $value = null)
+    public function token(string $type, string $value = null): self
     {
         if ($value) {
             $this->recognizers[$type] = new SimpleRecognizer($value);
@@ -51,9 +51,9 @@ class SimpleLexer extends AbstractLexer
      * @param string $type The token type.
      * @param string $regex The regular expression used to match the token.
      *
-     * @return \Dissect\Lexer\SimpleLexer This instance for fluent interface.
+     * @return SimpleLexer This instance for fluent interface.
      */
-    public function regex($type, $regex)
+    public function regex(string $type, string $regex): static
     {
         $this->recognizers[$type] = new RegexRecognizer($regex);
 
@@ -63,13 +63,13 @@ class SimpleLexer extends AbstractLexer
     /**
      * Marks the token types given as arguments to be skipped.
      *
-     * @param mixed $type,... Unlimited number of token types.
+     * @param mixed $types Unlimited number of token types.
      *
-     * @return \Dissect\Lexer\SimpleLexer This instance for fluent interface.
+     * @return SimpleLexer This instance for fluent interface.
      */
-    public function skip()
+    public function skip(mixed ...$types): static
     {
-        $this->skipTokens = func_get_args();
+        $this->skipTokens = $types;
 
         return $this;
     }
@@ -77,7 +77,7 @@ class SimpleLexer extends AbstractLexer
     /**
      * {@inheritDoc}
      */
-    protected function shouldSkipToken(Token $token)
+    protected function shouldSkipToken(Token $token): bool
     {
         return in_array($token->getType(), $this->skipTokens);
     }
@@ -85,7 +85,7 @@ class SimpleLexer extends AbstractLexer
     /**
      * {@inheritDoc}
      */
-    protected function extractToken($string)
+    protected function extractToken(string $string): ?Token
     {
         $value = $type = null;
 

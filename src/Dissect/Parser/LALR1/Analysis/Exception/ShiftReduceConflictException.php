@@ -25,21 +25,21 @@ The grammar exhibits a shift/reduce conflict on rule:
 EOT;
 
     /**
-     * @var \Dissect\Parser\Rule
+     * @var Rule
      */
-    protected $rule;
+    protected Rule $rule;
 
     /**
      * @var string
      */
-    protected $lookahead;
+    protected string $lookahead;
 
     /**
      * Constructor.
      *
-     * @param \Dissect\Parser\Rule $rule The conflicting grammar rule.
+     * @param Rule $rule The conflicting grammar rule.
      * @param string $lookahead The conflicting lookahead to shift.
-     * @param \Dissect\Parser\LALR1\Analysis\Automaton $automaton The faulty automaton.
+     * @param Automaton $automaton The faulty automaton.
      */
     public function __construct($state, Rule $rule, $lookahead, Automaton $automaton)
     {
@@ -65,9 +65,9 @@ EOT;
     /**
      * Returns the conflicting rule.
      *
-     * @return \Dissect\Parser\Rule The conflicting rule.
+     * @return Rule The conflicting rule.
      */
-    public function getRule()
+    public function getRule(): Rule
     {
         return $this->rule;
     }
@@ -77,7 +77,7 @@ EOT;
      *
      * @return string The conflicting lookahead.
      */
-    public function getLookahead()
+    public function getLookahead(): string
     {
         return $this->lookahead;
     }

@@ -6,6 +6,7 @@ use Dissect\Parser\Grammar;
 
 class ArithGrammar extends Grammar
 {
+    /** @noinspection PhpUnusedParameterInspection */
     public function __construct()
     {
         $this('Expr')
@@ -35,7 +36,7 @@ class ArithGrammar extends Grammar
             })
 
             ->is('(', 'Expr', ')')
-            ->call(function ($_, $e, $_) {
+            ->call(function ($r, $e, $_) {
                 return $e;
             })
 

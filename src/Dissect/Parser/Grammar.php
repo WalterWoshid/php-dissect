@@ -23,44 +23,28 @@ class Grammar
     const EPSILON = '$epsilon';
 
     /**
-     * @var \Dissect\Parser\Rule[]
+     * @var Rule[]
      */
-    protected $rules = array();
+    protected array $rules = [];
+
+    protected array $groupedRules = [];
+
+    protected int $nextRuleNumber = 1;
+
+    protected int $conflictsMode = 9; // SHIFT | OPERATORS
+
+    protected ?string $currentNonterminal = null;
 
     /**
-     * @var array
+     * @var string[]
      */
-    protected $groupedRules = array();
+    private array $nonterminals = [];
 
-    /**
-     * @var int
-     */
-    protected $nextRuleNumber = 1;
+    protected ?Rule $currentRule = null;
 
-    /**
-     * @var int
-     */
-    protected $conflictsMode = 9; // SHIFT | OPERATORS
+    protected array $operators = [];
 
-    /**
-     * @var string
-     */
-    protected $currentNonterminal;
-
-    /**
-     * @var \Dissect\Parser\Rule
-     */
-    protected $currentRule;
-
-    /**
-     * @var array
-     */
-    protected $operators = array();
-
-    /**
-     * @var array
-     */
-    protected $currentOperators;
+    protected ?array $currentOperators = null;
 
     /**
      * Signifies that the parser should not resolve any
@@ -117,7 +101,7 @@ class Grammar
      */
     const NONASSOC = 2;
 
-    public function __invoke($nonterminal)
+    public function __invoke(string $nonterminal): static
     {
         $this->currentNonterminal = $nonterminal;
 
@@ -127,11 +111,11 @@ class Grammar
     /**
      * Defines an alternative for a grammar rule.
      *
-     * @param string... The components of the rule.
+     * @param string ...$components The components of the rule.
      *
-     * @return \Dissect\Parser\Grammar This instance.
+     * @return Grammar This instance.
      */
-    public function is()
+    public function is(string ...$components): static
     {
         $this->currentOperators = null;
 
@@ -143,7 +127,7 @@ class Grammar
 
         $num = $this->nextRuleNumber++;
 
-        $rule = new Rule($num, $this->currentNonterminal, func_get_args());
+        $rule = new Rule($num, $this->currentNonterminal, $components);
 
         $this->rules[$num] =
             $this->currentRule =
@@ -158,9 +142,9 @@ class Grammar
      *
      * @param callable $callback The callback.
      *
-     * @return \Dissect\Parser\Grammar This instance.
+     * @return Grammar This instance.
      */
-    public function call($callback)
+    public function call(callable $callback): static
     {
         if ($this->currentRule === null) {
             throw new LogicException(
@@ -176,14 +160,14 @@ class Grammar
     /**
      * Returns the set of rules of this grammar.
      *
-     * @return \Dissect\Parser\Rule[] The rules.
+     * @return Rule[] The rules.
      */
-    public function getRules()
+    public function getRules(): array
     {
         return $this->rules;
     }
 
-    public function getRule($number)
+    public function getRule($number): Rule
     {
         return $this->rules[$number];
     }
@@ -193,7 +177,7 @@ class Grammar
      *
      * @return string[] The nonterminals.
      */
-    public function getNonterminals()
+    public function getNonterminals(): array
     {
         return $this->nonterminals;
     }
@@ -203,7 +187,7 @@ class Grammar
      *
      * @return array The rules grouped by nonterminal name.
      */
-    public function getGroupedRules()
+    public function getGroupedRules(): array
     {
         return $this->groupedRules;
     }
@@ -211,19 +195,19 @@ class Grammar
     /**
      * Sets a start rule for this grammar.
      *
-     * @param string The name of the start rule.
+     * @param string $name The name of the start rule.
      */
-    public function start($name)
+    public function start(string $name): void
     {
-        $this->rules[0] = new Rule(0, self::START_RULE_NAME, array($name));
+        $this->rules[0] = new Rule(0, self::START_RULE_NAME, [$name]);
     }
 
     /**
      * Returns the augmented start rule. For internal use only.
      *
-     * @return \Dissect\Parser\Rule The start rule.
+     * @return Rule The start rule.
      */
-    public function getStartRule()
+    public function getStartRule(): Rule
     {
         if (!isset($this->rules[0])) {
             throw new LogicException("No start rule specified.");
@@ -237,7 +221,7 @@ class Grammar
      *
      * @param int $mode The bitmask for the mode.
      */
-    public function resolve($mode)
+    public function resolve(int $mode): void
     {
         $this->conflictsMode = $mode;
     }
@@ -247,7 +231,7 @@ class Grammar
      *
      * @return int The bitmask of the resolution mode.
      */
-    public function getConflictsMode()
+    public function getConflictsMode(): int
     {
         return $this->conflictsMode;
     }
@@ -259,7 +243,7 @@ class Grammar
      *
      * @return boolean
      */
-    public function hasNonterminal($name)
+    public function hasNonterminal(string $name): bool
     {
         return array_key_exists($name, $this->groupedRules);
     }
@@ -267,23 +251,21 @@ class Grammar
     /**
      * Defines a group of operators.
      *
-     * @param string,... Any number of tokens that serve as the operators.
+     * @param string ...$ops Any number of tokens that serve as the operators.
      *
-     * @return \Dissect\Parser\Grammar This instance for fluent interface.
+     * @return Grammar This instance for fluent interface.
      */
-    public function operators()
+    public function operators(string ...$ops): static
     {
         $this->currentRule = null;
-
-        $ops = func_get_args();
 
         $this->currentOperators = $ops;
 
         foreach ($ops as $op) {
-            $this->operators[$op] = array(
+            $this->operators[$op] = [
                 'prec' => 1,
                 'assoc' => self::LEFT,
-            );
+            ];
         }
 
         return $this;
@@ -292,9 +274,9 @@ class Grammar
     /**
      * Marks the current group of operators as left-associative.
      *
-     * @return \Dissect\Parser\Grammar This instance for fluent interface.
+     * @return Grammar This instance for fluent interface.
      */
-    public function left()
+    public function left(): static
     {
         return $this->assoc(self::LEFT);
     }
@@ -302,9 +284,9 @@ class Grammar
     /**
      * Marks the current group of operators as right-associative.
      *
-     * @return \Dissect\Parser\Grammar This instance for fluent interface.
+     * @return Grammar This instance for fluent interface.
      */
-    public function right()
+    public function right(): static
     {
         return $this->assoc(self::RIGHT);
     }
@@ -312,9 +294,9 @@ class Grammar
     /**
      * Marks the current group of operators as nonassociative.
      *
-     * @return \Dissect\Parser\Grammar This instance for fluent interface.
+     * @return Grammar This instance for fluent interface.
      */
-    public function nonassoc()
+    public function nonassoc(): static
     {
         return $this->assoc(self::NONASSOC);
     }
@@ -324,9 +306,9 @@ class Grammar
      *
      * @param int $a One of Grammar::LEFT, Grammar::RIGHT, Grammar::NONASSOC
      *
-     * @return \Dissect\Parser\Grammar This instance for fluent interface.
+     * @return Grammar This instance for fluent interface.
      */
-    public function assoc($a)
+    public function assoc(int $a): static
     {
         if (!$this->currentOperators) {
             throw new LogicException('Define a group of operators first.');
@@ -346,9 +328,9 @@ class Grammar
      *
      * @param int $i The precedence as an integer.
      *
-     * @return \Dissect\Parser\Grammar This instance for fluent interface.
+     * @return Grammar This instance for fluent interface.
      */
-    public function prec($i)
+    public function prec(int $i): static
     {
         if (!$this->currentOperators) {
             if (!$this->currentRule) {
@@ -372,7 +354,7 @@ class Grammar
      *
      * @return boolean
      */
-    public function hasOperator($token)
+    public function hasOperator(string $token): bool
     {
         return array_key_exists($token, $this->operators);
     }

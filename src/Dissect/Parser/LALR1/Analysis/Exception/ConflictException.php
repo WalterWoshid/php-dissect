@@ -13,15 +13,12 @@ use LogicException;
  */
 class ConflictException extends LogicException
 {
-    protected $state;
-    protected $automaton;
-
-    public function __construct($message, $state, Automaton $automaton)
-    {
+    public function __construct(
+        string $message,
+        protected int $state,
+        protected Automaton $automaton
+    ) {
         parent::__construct($message);
-
-        $this->state = $state;
-        $this->automaton = $automaton;
     }
 
     /**
@@ -29,7 +26,7 @@ class ConflictException extends LogicException
      *
      * @return int
      */
-    public function getStateNumber()
+    public function getStateNumber(): int
     {
         return $this->state;
     }
@@ -37,9 +34,9 @@ class ConflictException extends LogicException
     /**
      * Returns the faulty automaton.
      *
-     * @return \Dissect\Parser\LALR1\Analysis\Automaton
+     * @return Automaton
      */
-    public function getAutomaton()
+    public function getAutomaton(): Automaton
     {
         return $this->automaton;
     }

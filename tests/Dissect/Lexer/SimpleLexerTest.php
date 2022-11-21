@@ -2,15 +2,13 @@
 
 namespace Dissect\Lexer;
 
-use Dissect\Lexer\Recognizer\RegexRecognizer;
-use Dissect\Lexer\Recognizer\SimpleRecognizer;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class SimpleLexerTest extends PHPUnit_Framework_TestCase
+class SimpleLexerTest extends TestCase
 {
-    protected $lexer;
+    protected SimpleLexer $lexer;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->lexer = new SimpleLexer();
 

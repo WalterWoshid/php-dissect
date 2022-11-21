@@ -12,11 +12,12 @@
     ],
 
     "require": {
-        "php": ">=5.3.3"
+        "php": ">=8.0"
     },
 
     "require-dev": {
-        "symfony/console": "~2.1"
+        "symfony/console": ">=6.0",
+        "phpunit/phpunit": ">=9"
     },
 
     "suggest": {

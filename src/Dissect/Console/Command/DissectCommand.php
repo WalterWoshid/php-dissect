@@ -52,7 +52,7 @@ EOT
             );
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $class = strtr(
             $input->getArgument('grammar-class'),
@@ -65,13 +65,14 @@ EOT
         $output->writeln('');
 
         if (!class_exists($class)) {
-            $output->writeln(array(
+            /** @noinspection PhpPossiblePolymorphicInvocationInspection */
+            $output->writeln([
                 $formatter->formatBlock(
                     sprintf('The class "%s" could not be found.', $class),
                     'error',
                     true
                 ),
-            ));
+            ]);
 
             return 1;
         }
@@ -88,7 +89,6 @@ EOT
         }
 
         $analyzer = new Analyzer();
-        $automaton = null;
 
         try {
             $result = $analyzer->analyze($grammar);
@@ -128,13 +128,14 @@ EOT
                 $output->writeln('<info>Parse table written</info>');
             }
         } catch(ConflictException $e) {
-            $output->writeln(array(
+            /** @noinspection PhpPossiblePolymorphicInvocationInspection */
+            $output->writeln([
                 $formatter->formatBlock(
                     explode("\n", $e->getMessage()),
                     'error',
                     true
                 ),
-            ));
+            ]);
 
             $automaton = $e->getAutomaton();
         }
@@ -153,13 +154,14 @@ EOT
                 $state = (int)$input->getOption('state');
 
                 if (!$automaton->hasState($state)) {
-                    $output->writeln(array(
+                    /** @noinspection PhpPossiblePolymorphicInvocationInspection */
+                    $output->writeln([
                         $formatter->formatBlock(
                             sprintf('The automaton has no state #%d', $state),
                             'error',
                             true
                         ),
-                    ));
+                    ]);
 
                     return 1;
                 }
@@ -186,7 +188,7 @@ EOT
         return 0;
     }
 
-    protected function formatConflict(array $conflict)
+    protected function formatConflict(array $conflict): string
     {
         $type = $conflict['resolution'] === Grammar::SHIFT
             ? 'shift/reduce'

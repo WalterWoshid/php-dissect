@@ -2,9 +2,9 @@
 
 namespace Dissect\Lexer\Recognizer;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class SimpleRecognizerTest extends PHPUnit_Framework_TestCase
+class SimpleRecognizerTest extends TestCase
 {
     /**
      * @test

@@ -14,12 +14,12 @@ use Dissect\Parser\LALR1\Analysis\State;
  */
 class AutomatonDumper
 {
-    protected $automaton;
+    protected Automaton $automaton;
 
     /**
      * Constructor.
      *
-     * @param \Dissect\Parser\LALR1\Analysis\Automaton $automaton
+     * @param Automaton $automaton
      */
     public function __construct(Automaton $automaton)
     {
@@ -31,7 +31,7 @@ class AutomatonDumper
      *
      * @return string The automaton encoded in DOT.
      */
-    public function dump()
+    public function dump(): string
     {
         $writer = new StringWriter();
 
@@ -69,7 +69,7 @@ class AutomatonDumper
      *
      * @return string The output in DOT format.
      */
-    public function dumpState($n)
+    public function dumpState(int $n): string
     {
         $writer = new StringWriter();
 
@@ -79,7 +79,7 @@ class AutomatonDumper
         $this->writeState($writer, $this->automaton->getState($n));
 
         $table = $this->automaton->getTransitionTable();
-        $row = isset($table[$n]) ? $table[$n] : array();
+        $row = $table[$n] ?? [];
 
         foreach ($row as $dest) {
             if ($dest !== $n) {
@@ -104,7 +104,7 @@ class AutomatonDumper
         return $writer->get();
     }
 
-    protected function writeHeader(StringWriter $writer, $stateNumber = null)
+    protected function writeHeader(StringWriter $writer, $stateNumber = null): void
     {
         $writer->writeLine(sprintf(
             'digraph %s {',
@@ -115,7 +115,7 @@ class AutomatonDumper
         $writer->writeLine('rankdir="LR";');
     }
 
-    protected function writeState(StringWriter $writer, State $state, $full = true)
+    protected function writeState(StringWriter $writer, State $state, $full = true): void
     {
         $n = $state->getNumber();
 
@@ -127,7 +127,7 @@ class AutomatonDumper
 
         if ($full) {
             $string .= '\n\n';
-            $items = array();
+            $items = [];
 
             foreach ($state->getItems() as $item) {
                 $items[] = $this->formatItem($item);
@@ -141,13 +141,13 @@ class AutomatonDumper
         $writer->writeLine($string);
     }
 
-    protected function formatItem(Item $item)
+    protected function formatItem(Item $item): string
     {
         $rule = $item->getRule();
         $components = $rule->getComponents();
 
         // the dot
-        array_splice($components, $item->getDotIndex(), 0, array('&bull;'));
+        array_splice($components, $item->getDotIndex(), 0, ['&bull;']);
 
         if ($rule->getNumber() === 0) {
             $string = '';
@@ -167,7 +167,7 @@ class AutomatonDumper
         return $string;
     }
 
-    protected function writeFooter(StringWriter $writer)
+    protected function writeFooter(StringWriter $writer): void
     {
         $writer->writeLine('}');
     }

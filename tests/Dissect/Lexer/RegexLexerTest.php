@@ -3,13 +3,13 @@
 namespace Dissect\Lexer;
 
 use Dissect\Parser\Parser;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class RegexLexerTest extends PHPUnit_Framework_TestCase
+class RegexLexerTest extends TestCase
 {
-    protected $lexer;
+    protected StubRegexLexer $lexer;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->lexer = new StubRegexLexer();
     }

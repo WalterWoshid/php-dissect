@@ -11,14 +11,14 @@ use RuntimeException;
  */
 class RecognitionException extends RuntimeException
 {
-    protected $sourceLine;
+    protected int $sourceLine;
 
     /**
      * Constructor.
      *
      * @param int $line The line in the source.
      */
-    public function __construct($line)
+    public function __construct(int $line)
     {
         $this->sourceLine = $line;
 
@@ -30,7 +30,7 @@ class RecognitionException extends RuntimeException
      *
      * @return int The source line number.
      */
-    public function getSourceLine()
+    public function getSourceLine(): int
     {
         return $this->sourceLine;
     }

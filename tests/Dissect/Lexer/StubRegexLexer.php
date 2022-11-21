@@ -6,19 +6,19 @@ use RuntimeException;
 
 class StubRegexLexer extends RegexLexer
 {
-    protected $operators = array('+', '-');
+    protected array $operators = ['+', '-'];
 
-    protected function getCatchablePatterns()
+    protected function getCatchablePatterns(): array
     {
-        return array('[1-9][0-9]*');
+        return ['[1-9][0-9]*'];
     }
 
-    protected function getNonCatchablePatterns()
+    protected function getNonCatchablePatterns(): array
     {
-        return array('\s+');
+        return ['\s+'];
     }
 
-    protected function getType(&$value)
+    protected function getType(string &$value): string
     {
         if (is_numeric($value)) {
             $value = (int)$value;

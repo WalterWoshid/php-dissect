@@ -29,30 +29,30 @@ vs:
 EOT;
 
     /**
-     * @var \Dissect\Parser\Rule
+     * @var Rule
      */
-    protected $firstRule;
+    protected Rule $firstRule;
 
     /**
-     * @var \Dissect\Parser\Rule
+     * @var Rule
      */
-    protected $secondRule;
+    protected Rule $secondRule;
 
     /**
      * @var string
      */
-    protected $lookahead;
+    protected string $lookahead;
 
     /**
      * Constructor.
      *
      * @param int $state The number of the inadequate state.
-     * @param \Dissect\Parser\Rule $firstRule The first conflicting grammar rule.
-     * @param \Dissect\Parser\Rule $secondRule The second conflicting grammar rule.
+     * @param Rule $firstRule The first conflicting grammar rule.
+     * @param Rule $secondRule The second conflicting grammar rule.
      * @param string $lookahead The conflicting lookahead.
-     * @param \Dissect\Parser\LALR1\Analysis\Automaton $automaton The faulty automaton.
+     * @param Automaton $automaton The faulty automaton.
      */
-    public function __construct($state, Rule $firstRule, Rule $secondRule, $lookahead, Automaton $automaton)
+    public function __construct(int $state, Rule $firstRule, Rule $secondRule, string $lookahead, Automaton $automaton)
     {
         $components1 = $firstRule->getComponents();
         $components2 = $secondRule->getComponents();
@@ -81,9 +81,9 @@ EOT;
     /**
      * Returns the first conflicting rule.
      *
-     * @return \Dissect\Parser\Rule The first conflicting rule.
+     * @return Rule The first conflicting rule.
      */
-    public function getFirstRule()
+    public function getFirstRule(): Rule
     {
         return $this->firstRule;
     }
@@ -91,9 +91,9 @@ EOT;
     /**
      * Returns the second conflicting rule.
      *
-     * @return \Dissect\Parser\Rule The second conflicting rule.
+     * @return Rule The second conflicting rule.
      */
-    public function getSecondRule()
+    public function getSecondRule(): Rule
     {
         return $this->secondRule;
     }
@@ -103,7 +103,7 @@ EOT;
      *
      * @return string The conflicting lookahead.
      */
-    public function getLookahead()
+    public function getLookahead(): string
     {
         return $this->lookahead;
     }

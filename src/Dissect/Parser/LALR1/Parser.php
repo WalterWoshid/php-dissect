@@ -4,6 +4,7 @@ namespace Dissect\Parser\LALR1;
 
 use Dissect\Lexer\TokenStream\TokenStream;
 use Dissect\Parser\Exception\UnexpectedTokenException;
+use Dissect\Parser\Grammar;
 use Dissect\Parser\LALR1\Analysis\Analyzer;
 use Dissect\Parser as P;
 
@@ -15,22 +16,22 @@ use Dissect\Parser as P;
 class Parser implements P\Parser
 {
     /**
-     * @var \Dissect\Parser\Grammar
+     * @var Grammar
      */
-    protected $grammar;
+    protected Grammar $grammar;
 
     /**
      * @var array
      */
-    protected $parseTable;
+    protected array $parseTable;
 
     /**
      * Constructor.
      *
-     * @param \Dissect\Parser\Grammar $grammar The grammar.
-     * @param array $parseTable If given, the parser doesn't have to analyze the grammar.
+     * @param Grammar $grammar The grammar.
+     * @param array|null $parseTable If given, the parser doesn't have to analyze the grammar.
      */
-    public function __construct(P\Grammar $grammar, array $parseTable = null)
+    public function __construct(Grammar $grammar, array $parseTable = null)
     {
         $this->grammar = $grammar;
 
@@ -45,10 +46,10 @@ class Parser implements P\Parser
     /**
      * {@inheritDoc}
      */
-    public function parse(TokenStream $stream)
+    public function parse(TokenStream $stream): mixed
     {
-        $stateStack = array($currentState = 0);
-        $args = array();
+        $stateStack = [$currentState = 0];
+        $args = [];
 
         foreach ($stream as $token) {
             while (true) {
@@ -96,5 +97,7 @@ class Parser implements P\Parser
                 }
             }
         }
+
+        return null;
     }
 }

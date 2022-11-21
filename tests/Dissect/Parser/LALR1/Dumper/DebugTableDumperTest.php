@@ -3,9 +3,9 @@
 namespace Dissect\Parser\LALR1\Dumper;
 
 use Dissect\Parser\LALR1\Analysis\Analyzer;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class DebugTableDumperTest extends PHPUnit_Framework_TestCase
+class DebugTableDumperTest extends TestCase
 {
     /**
      * @test

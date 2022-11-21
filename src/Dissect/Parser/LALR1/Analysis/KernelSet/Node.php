@@ -4,13 +4,13 @@ namespace Dissect\Parser\LALR1\Analysis\KernelSet;
 
 class Node
 {
-    public $kernel;
-    public $number;
+    public array $kernel;
+    public int $number;
 
-    public $left = null;
-    public $right = null;
+    public ?Node $left = null;
+    public ?Node $right = null;
 
-    public function __construct(array $hashedKernel, $number)
+    public function __construct(array $hashedKernel, int $number)
     {
         $this->kernel = $hashedKernel;
         $this->number = $number;

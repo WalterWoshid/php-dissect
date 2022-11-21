@@ -31,32 +31,32 @@ use Dissect\Parser\Rule;
 class Item
 {
     /**
-     * @var \Dissect\Parser\Rule
+     * @var Rule
      */
-    protected $rule;
+    protected Rule $rule;
 
     /**
      * @var int
      */
-    protected $dotIndex;
+    protected int $dotIndex;
 
     /**
      * @var array
      */
-    protected $lookahead = array();
+    protected array $lookahead = [];
 
     /**
      * @var array
      */
-    protected $connected = array();
+    protected array $connected = [];
 
     /**
      * Constructor.
      *
-     * @param \Dissect\Parser\Rule $rule The rule of this item.
+     * @param Rule $rule The rule of this item.
      * @param int $dotIndex The index of the dot in this item.
      */
-    public function __construct(Rule $rule, $dotIndex)
+    public function __construct(Rule $rule, int $dotIndex)
     {
         $this->rule = $rule;
         $this->dotIndex = $dotIndex;
@@ -67,7 +67,7 @@ class Item
      *
      * @return int The dot index.
      */
-    public function getDotIndex()
+    public function getDotIndex(): int
     {
         return $this->dotIndex;
     }
@@ -85,7 +85,7 @@ class Item
      *
      * @return string The component.
      */
-    public function getActiveComponent()
+    public function getActiveComponent(): string
     {
         return $this->rule->getComponent($this->dotIndex);
     }
@@ -93,9 +93,9 @@ class Item
     /**
      * Returns the rule of this item.
      *
-     * @return \Dissect\Parser\Rule The rule.
+     * @return Rule The rule.
      */
-    public function getRule()
+    public function getRule(): Rule
     {
         return $this->rule;
     }
@@ -111,7 +111,7 @@ class Item
      *
      * @return boolean Whether this item is a reduce item.
      */
-    public function isReduceItem()
+    public function isReduceItem(): bool
     {
         return $this->dotIndex === count($this->rule->getComponents());
     }
@@ -119,9 +119,9 @@ class Item
     /**
      * Connects two items with a lookahead pumping channel.
      *
-     * @param \Dissect\Parser\LALR1\Analysis\Item $i The item.
+     * @param Item $i The item.
      */
-    public function connect(Item $i)
+    public function connect(Item $i): void
     {
         $this->connected[] = $i;
     }
@@ -132,7 +132,7 @@ class Item
      *
      * @param string $lookahead The lookahead token name.
      */
-    public function pump($lookahead)
+    public function pump(string $lookahead): void
     {
         if (!in_array($lookahead, $this->lookahead)) {
             $this->lookahead[] = $lookahead;
@@ -148,7 +148,7 @@ class Item
      *
      * @param array $lookahead The lookahead tokens.
      */
-    public function pumpAll(array $lookahead)
+    public function pumpAll(array $lookahead): void
     {
         foreach ($lookahead as $l) {
             $this->pump($l);
@@ -160,7 +160,7 @@ class Item
      *
      * @return string[] The lookahead symbols.
      */
-    public function getLookahead()
+    public function getLookahead(): array
     {
         return $this->lookahead;
     }
@@ -171,7 +171,7 @@ class Item
      *
      * @return array The unrecognized components.
      */
-    public function getUnrecognizedComponents()
+    public function getUnrecognizedComponents(): array
     {
         return array_slice($this->rule->getComponents(), $this->dotIndex + 1);
     }

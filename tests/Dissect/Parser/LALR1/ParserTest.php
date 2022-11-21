@@ -3,14 +3,14 @@
 namespace Dissect\Parser\LALR1;
 
 use Dissect\Parser\Exception\UnexpectedTokenException;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class ParserTest extends PHPUnit_Framework_TestCase
+class ParserTest extends TestCase
 {
-    protected $lexer;
-    protected $parser;
+    protected ArithLexer $lexer;
+    protected Parser $parser;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->lexer = new ArithLexer();
         $this->parser = new Parser(new ArithGrammar());
