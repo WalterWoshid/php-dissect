@@ -43,14 +43,14 @@
     },
     "autoload": {
         "psr-0": {
-            "Dissect": [
+            "Dissect\\": [
                 "src/"
             ]
         }
     },
     "autoload-dev": {
         "psr-0": {
-            "Dissect\\Tests": [
+            "Dissect\\": [
                 "tests/"
             ]
         }
