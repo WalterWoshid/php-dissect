@@ -1,32 +1,58 @@
 {
     "name": "walterwoshid/dissect",
-    "description": "Lexing and parsing in pure PHP",
-    "keywords": ["lexing", "parsing", "ast", "parser"],
+    "description": "A set of tools for lexical and syntactical analysis written in pure PHP - Fork by WalterWoshid",
+    "version": "2.0.0",
+    "type": "library",
     "homepage": "https://github.com/jakubledl/dissect",
-    "license": "unlicense",
+    "license": "MIT",
     "authors": [
         {
             "name": "Jakub Lédl",
-            "email": "jakubledl@gmail.com"
+            "email": "jakubledl@gmail.com",
+            "homepage": "https://github.com/jakubledl"
+        },
+        {
+            "name": "WalterWoshid",
+            "email": "wotschel.valentin@googlemail.com",
+            "homepage": "https://github.com/WalterWoshid"
         }
     ],
-
+    "keywords": [
+        "lexing",
+        "parsing",
+        "ast",
+        "parser"
+    ],
+    "bin": [
+        "bin/dissect.php",
+        "bin/dissect"
+    ],
+    "scripts": {
+        "test": "phpunit",
+        "test-coverage": "phpunit --coverage-html tests/coverage"
+    },
     "require": {
         "php": ">=8.0"
     },
-
     "require-dev": {
         "symfony/console": ">=6.0",
         "phpunit/phpunit": ">=9"
     },
-
     "suggest": {
         "symfony/console": "for the command-line tool"
     },
-
-    "bin": ["bin/dissect.php", "bin/dissect"],
-
     "autoload": {
-        "psr-0": { "Dissect": ["src/"] }
+        "psr-0": {
+            "Dissect": [
+                "src/"
+            ]
+        }
+    },
+    "autoload-dev": {
+        "psr-0": {
+            "Dissect\\Tests": [
+                "tests/"
+            ]
+        }
     }
 }

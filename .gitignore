@@ -1,10 +1,11 @@
 # IDE's
-/.idea/
+.idea/
 
 # Composer
-/vendor/
+vendor/
 composer.phar
 composer.lock
 
 # PhpUnit
+tests/coverage/
 .phpunit.result.cache
