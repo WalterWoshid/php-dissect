@@ -28,7 +28,9 @@
     ],
     "scripts": {
         "test": "phpunit",
-        "test-coverage": "phpunit --coverage-html tests/coverage"
+        "test-php-8.0": "phpunit --configuration phpunit-9.6.xml",
+        "test-coverage": "phpunit --coverage-html tests/coverage",
+        "test-coverage-php-8.0": "phpunit --configuration phpunit-9.6.xml --coverage-html tests/coverage"
     },
     "require": {
         "php": ">=8.0"
