@@ -46,6 +46,11 @@
   <a href="https://app.codecov.io/gh/WalterWoshid/php-dissect/flags" target="_blank">
     <img alt="Coverage - PHP 8.2" src="https://img.shields.io/codecov/c/github/WalterWoshid/php-dissect?flag=os-ubuntu-latest_php-8.2&label=Coverage - PHP 8.2&labelColor=ebdbb2&style=flat&logo=codecov&logoColor=FFC107&color=FFC107"/>
   </a>
+
+  <!-- Coverage - PHP 8.3 -->
+  <a href="https://app.codecov.io/gh/WalterWoshid/php-dissect/flags" target="_blank">
+    <img alt="Coverage - PHP 8.3" src="https://img.shields.io/codecov/c/github/WalterWoshid/php-dissect?flag=os-ubuntu-latest_php-8.3&label=Coverage - PHP 8.3&labelColor=ebdbb2&style=flat&logo=codecov&logoColor=FFC107&color=FFC107"/>
+  </a>
 </p>
 
 <h2 align="center">Dissect is a set of tools for lexical and syntactical analysis written in pure PHP.</h2>
