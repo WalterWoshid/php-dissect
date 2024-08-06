@@ -3,13 +3,12 @@
 namespace Dissect\Parser\LALR1\Analysis;
 
 use Dissect\Parser\Rule;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class StateTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function stateShouldKeepItemsByRuleNumberAndPosition()
     {
         $item1 = new Item(new Rule(1, 'E', ['E', '+', 'T']), 0);

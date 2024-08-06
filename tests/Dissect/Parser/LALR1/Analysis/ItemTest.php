@@ -3,13 +3,12 @@
 namespace Dissect\Parser\LALR1\Analysis;
 
 use Dissect\Parser\Rule;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class ItemTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function getActiveComponentShouldReturnTheComponentAboutToBeEncountered()
     {
         $item = new Item(new Rule(1, 'A', ['a', 'b', 'c']), 1);
@@ -17,9 +16,7 @@ class ItemTest extends TestCase
         $this->assertEquals('b', $item->getActiveComponent());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function itemShouldBeAReduceItemIfAllComponentsHaveBeenEncountered()
     {
         $item = new Item(new Rule(1, 'A', ['a', 'b', 'c']), 1);
@@ -29,9 +26,7 @@ class ItemTest extends TestCase
         $this->assertTrue($item->isReduceItem());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function itemShouldPumpLookaheadIntoConnectedItems()
     {
         $item1 = new Item(new Rule(1, 'A', ['a', 'b', 'c']), 1);
@@ -43,9 +38,7 @@ class ItemTest extends TestCase
         $this->assertContains('d', $item2->getLookahead());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function itemShouldPumpTheSameLookaheadOnlyOnce()
     {
         $item1 = new Item(new Rule(1, 'A', ['a', 'b', 'c']), 1);
@@ -68,9 +61,7 @@ class ItemTest extends TestCase
         $item1->pump('d');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getUnrecognizedComponentsShouldReturnAllComponentAfterTheDottedOne()
     {
         $item = new Item(new Rule(1, 'A', ['a', 'b', 'c']), 1);

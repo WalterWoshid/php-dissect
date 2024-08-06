@@ -3,6 +3,7 @@
 namespace Dissect\Lexer;
 
 use Dissect\Parser\Parser;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class RegexLexerTest extends TestCase
@@ -14,9 +15,7 @@ class RegexLexerTest extends TestCase
         $this->lexer = new StubRegexLexer();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function itShouldCallGetTypeToRetrieveTokenType()
     {
         $stream = $this->lexer->lex('5 + 6');
@@ -27,9 +26,7 @@ class RegexLexerTest extends TestCase
         $this->assertEquals(Parser::EOF_TOKEN_TYPE, $stream->get(3)->getType());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function itShouldTrackLineNumbers()
     {
         $stream = $this->lexer->lex("5\n+\n\n5");

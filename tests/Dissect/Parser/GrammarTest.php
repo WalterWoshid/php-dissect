@@ -2,6 +2,7 @@
 
 namespace Dissect\Parser;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class GrammarTest extends TestCase
@@ -13,9 +14,7 @@ class GrammarTest extends TestCase
         $this->grammar = new ExampleGrammar();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function ruleAlternativesShouldHaveTheSameName()
     {
         $rules = $this->grammar->getRules();
@@ -24,9 +23,7 @@ class GrammarTest extends TestCase
         $this->assertEquals('Foo', $rules[2]->getName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function theGrammarShouldBeAugmentedWithAStartRule()
     {
         $this->assertEquals(
@@ -40,18 +37,14 @@ class GrammarTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shouldReturnAlternativesGroupedByName()
     {
         $rules = $this->grammar->getGroupedRules();
         $this->assertCount(2, $rules['Foo']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function nonterminalsShouldBeDetectedFromRuleNames()
     {
         $this->assertTrue($this->grammar->hasNonterminal('Foo'));

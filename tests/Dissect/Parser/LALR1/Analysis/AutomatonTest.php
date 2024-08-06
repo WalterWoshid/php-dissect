@@ -2,6 +2,7 @@
 
 namespace Dissect\Parser\LALR1\Analysis;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class AutomatonTest extends TestCase
@@ -15,9 +16,7 @@ class AutomatonTest extends TestCase
         $this->automaton->addState(new State(1, []));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addingATransitionShouldBeVisibleInTheTransitionTable()
     {
         $this->automaton->addTransition(0, 'a', 1);
@@ -26,9 +25,7 @@ class AutomatonTest extends TestCase
         $this->assertEquals(1, $table[0]['a']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function aNewStateShouldBeIdentifiedByItsNumber()
     {
         $state = new State(2, []);

@@ -3,6 +3,7 @@
 namespace Dissect\Parser\LALR1;
 
 use Dissect\Parser\Exception\UnexpectedTokenException;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class ParserTest extends TestCase
@@ -16,9 +17,7 @@ class ParserTest extends TestCase
         $this->parser = new Parser(new ArithGrammar());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parserShouldProcessTheTokenStreamAndUseGrammarCallbacksForReductions()
     {
         $this->assertEquals(-2, $this->parser->parse($this->lexer->lex(
@@ -34,9 +33,7 @@ class ParserTest extends TestCase
             '4 ** 3 ** 2')));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parserShouldThrowAnExceptionOnInvalidInput()
     {
         try {

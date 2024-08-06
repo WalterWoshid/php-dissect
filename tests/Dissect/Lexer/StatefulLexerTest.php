@@ -3,6 +3,7 @@
 namespace Dissect\Lexer;
 
 use LogicException;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class StatefulLexerTest extends TestCase
@@ -14,9 +15,7 @@ class StatefulLexerTest extends TestCase
         $this->lexer = new StatefulLexer();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addingNewTokenShouldThrowAnExceptionWhenNoStateIsBeingBuilt()
     {
         $this->expectExceptionMessage("Define a lexer state first.");
@@ -24,9 +23,7 @@ class StatefulLexerTest extends TestCase
         $this->lexer->regex('WORD', '/[a-z]+/');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function anExceptionShouldBeThrownOnLexingWithoutAStartingState()
     {
         $this->expectException(LogicException::class);
@@ -34,9 +31,7 @@ class StatefulLexerTest extends TestCase
         $this->lexer->lex('foo');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function theStateMechanismShouldCorrectlyPushAndPopStatesFromTheStack()
     {
         /** @noinspection PhpPossiblePolymorphicInvocationInspection */
@@ -61,9 +56,7 @@ class StatefulLexerTest extends TestCase
         $this->assertEquals('quux', $stream->get(6)->getValue());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function defaultActionShouldBeNop()
     {
         $this->lexer->state('root')

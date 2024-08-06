@@ -2,13 +2,12 @@
 
 namespace Dissect\Lexer\Recognizer;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class RegexRecognizerTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function recognizerShouldMatchAndPassTheValueByReference()
     {
         $recognizer = new RegexRecognizer('/[a-z]+/');
@@ -19,9 +18,7 @@ class RegexRecognizerTest extends TestCase
         $this->assertEquals('lorem', $value);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function recognizerShouldFailAndTheValueShouldStayNull()
     {
         $recognizer = new RegexRecognizer('/[a-z]+/');
@@ -31,9 +28,7 @@ class RegexRecognizerTest extends TestCase
         $this->assertNull($value);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function recognizerShouldFailIfTheMatchIsNotAtTheBeginningOfTheString()
     {
         $recognizer = new RegexRecognizer('/[a-z]+/');

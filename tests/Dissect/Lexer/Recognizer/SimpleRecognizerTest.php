@@ -2,13 +2,12 @@
 
 namespace Dissect\Lexer\Recognizer;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class SimpleRecognizerTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function recognizerShouldMatchAndPassTheValueByReference()
     {
         $recognizer = new SimpleRecognizer('class');
@@ -19,9 +18,7 @@ class SimpleRecognizerTest extends TestCase
         $this->assertEquals('class', $value);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function recognizerShouldFailAndTheValueShouldStayNull()
     {
         $recognizer = new SimpleRecognizer('class');

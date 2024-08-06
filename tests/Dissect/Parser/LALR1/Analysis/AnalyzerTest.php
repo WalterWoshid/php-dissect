@@ -5,15 +5,14 @@ namespace Dissect\Parser\LALR1\Analysis;
 use Dissect\Parser\LALR1\Analysis\Exception\ReduceReduceConflictException;
 use Dissect\Parser\Grammar;
 use Dissect\Parser\Parser;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class AnalyzerTest extends TestCase
 {
     protected ?Analyzer $analyzer = null;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function automatonShouldBeCorrectlyBuilt()
     {
         $grammar = new Grammar();
@@ -34,9 +33,7 @@ class AnalyzerTest extends TestCase
         $this->assertEquals(4, $table[3]['b']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function lookaheadShouldBeCorrectlyPumped()
     {
         $grammar = new Grammar();
@@ -91,9 +88,7 @@ class AnalyzerTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parseTableShouldBeCorrectlyBuilt()
     {
         $grammar = new Grammar();
@@ -132,9 +127,7 @@ class AnalyzerTest extends TestCase
         $this->assertEquals(3, $table['goto'][2]['S']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function unexpectedConflictsShouldThrowAnException()
     {
         $grammar = new Grammar();
@@ -162,9 +155,7 @@ class AnalyzerTest extends TestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function expectedConflictsShouldBeRecorded()
     {
         $grammar = new Grammar();

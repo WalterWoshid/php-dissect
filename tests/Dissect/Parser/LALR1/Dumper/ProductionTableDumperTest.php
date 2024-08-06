@@ -3,13 +3,12 @@
 namespace Dissect\Parser\LALR1\Dumper;
 
 use Dissect\Parser\LALR1\Analysis\Analyzer;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class ProductionTableDumperTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function theWrittenTableShouldBeAsCompactAsPossible()
     {
         $grammar = new ExampleGrammar();

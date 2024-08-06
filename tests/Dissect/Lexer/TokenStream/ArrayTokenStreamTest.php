@@ -4,6 +4,7 @@ namespace Dissect\Lexer\TokenStream;
 
 use Dissect\Lexer\CommonToken;
 use OutOfBoundsException;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class ArrayTokenStreamTest extends TestCase
@@ -21,17 +22,13 @@ class ArrayTokenStreamTest extends TestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function theCursorShouldBeOnFirstTokenByDefault()
     {
         $this->assertEquals('6', $this->stream->getCurrentToken()->getValue());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPositionShouldReturnCurrentPosition()
     {
         $this->stream->seek(2);
@@ -40,79 +37,61 @@ class ArrayTokenStreamTest extends TestCase
         $this->assertEquals(3, $this->stream->getPosition());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function lookAheadShouldReturnTheCorrectToken()
     {
         $this->assertEquals('5', $this->stream->lookAhead(2)->getValue());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function lookAheadShouldThrowAnExceptionWhenInvalid()
     {
         $this->expectException(OutOfBoundsException::class);
         $this->stream->lookAhead(15);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getShouldReturnATokenByAbsolutePosition()
     {
         $this->assertEquals('3', $this->stream->get(4)->getValue());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getShouldThrowAnExceptionWhenInvalid()
     {
         $this->expectException(OutOfBoundsException::class);
         $this->stream->get(15);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function moveShouldMoveTheCursorByToAnAbsolutePosition()
     {
         $this->stream->move(2);
         $this->assertEquals('5', $this->stream->getCurrentToken()->getValue());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function moveShouldThrowAnExceptionWhenInvalid()
     {
         $this->expectException(OutOfBoundsException::class);
         $this->stream->move(15);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function seekShouldMoveTheCursorByRelativeOffset()
     {
         $this->stream->seek(4);
         $this->assertEquals('3', $this->stream->getCurrentToken()->getValue());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function seekShouldThrowAnExceptionWhenInvalid()
     {
         $this->expectException(OutOfBoundsException::class);
         $this->stream->seek(15);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function nextShouldMoveTheCursorOneTokenAhead()
     {
         $this->stream->next();
@@ -122,9 +101,7 @@ class ArrayTokenStreamTest extends TestCase
         $this->assertEquals('5', $this->stream->getCurrentToken()->getValue());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function nextShouldThrowAnExceptionWhenAtTheEndOfTheStream()
     {
         $this->expectException(OutOfBoundsException::class);

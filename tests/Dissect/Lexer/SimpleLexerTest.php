@@ -2,6 +2,7 @@
 
 namespace Dissect\Lexer;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class SimpleLexerTest extends TestCase
@@ -23,9 +24,7 @@ class SimpleLexerTest extends TestCase
             ->skip('WS');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function simpleLexerShouldWalkThroughTheRecognizers()
     {
         $stream = $this->lexer->lex('a (b) c');
@@ -36,9 +35,7 @@ class SimpleLexerTest extends TestCase
         $this->assertEquals('C', $stream->get(4)->getType());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function simpleLexerShouldSkipSpecifiedTokens()
     {
         $stream = $this->lexer->lex('a (b) c');
@@ -48,9 +45,7 @@ class SimpleLexerTest extends TestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function simpleLexerShouldReturnTheBestMatch()
     {
         $this->lexer->token('CLASS', 'class');

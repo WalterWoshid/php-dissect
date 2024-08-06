@@ -4,6 +4,7 @@ namespace Dissect\Lexer;
 
 use Dissect\Lexer\Exception\RecognitionException;
 use Dissect\Parser\Parser;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class AbstractLexerTest extends TestCase
@@ -15,9 +16,7 @@ class AbstractLexerTest extends TestCase
         $this->lexer = new StubLexer();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function lexShouldDelegateToExtractTokenUpdatingTheLineAndOffsetAccordingly()
     {
         $stream = $this->lexer->lex("ab\nc");
@@ -38,9 +37,7 @@ class AbstractLexerTest extends TestCase
         $this->assertEquals(2, $stream->getCurrentToken()->getLine());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function lexShouldAppendAnEofTokenAutomatically()
     {
         $stream = $this->lexer->lex("abc");
@@ -50,9 +47,7 @@ class AbstractLexerTest extends TestCase
         $this->assertEquals(1, $stream->getCurrentToken()->getLine());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function lexShouldThrowAnExceptionOnAnUnrecognizableToken()
     {
         try {
@@ -63,18 +58,14 @@ class AbstractLexerTest extends TestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function lexShouldNormalizeLineEndingsBeforeLexing()
     {
         $stream = $this->lexer->lex("a\r\nb");
         $this->assertEquals("\n", $stream->get(1)->getValue());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function lexShouldSkipTokensIfToldToDoSo()
     {
         $stream = $this->lexer->lex('aeb');

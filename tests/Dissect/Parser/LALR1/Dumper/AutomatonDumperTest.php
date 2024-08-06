@@ -3,6 +3,7 @@
 namespace Dissect\Parser\LALR1\Dumper;
 
 use Dissect\Parser\LALR1\Analysis\Analyzer;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class AutomatonDumperTest extends TestCase
@@ -16,9 +17,7 @@ class AutomatonDumperTest extends TestCase
         $this->dumper = new AutomatonDumper($automaton);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function dumpDumpsTheEntireAutomaton()
     {
         $this->assertStringEqualsFile(
@@ -27,9 +26,7 @@ class AutomatonDumperTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function dumpStateDumpsOnlyTheSpecifiedStateAndTransitions()
     {
         $this->assertStringEqualsFile(

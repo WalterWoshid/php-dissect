@@ -2,13 +2,12 @@
 
 namespace Dissect\Parser\LALR1\Analysis\KernelSet;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class KernelSetTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function kernelsShouldBeProperlyHashedAndOrdered()
     {
         $this->assertEquals(array(1, 3, 6, 7), KernelSet::hashKernel(array(
@@ -19,9 +18,7 @@ class KernelSetTest extends TestCase
         )));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function insertShouldInsertANewNodeIfNoIdenticalKernelExists()
     {
         $set = new KernelSet();
