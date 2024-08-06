@@ -1,7 +1,6 @@
 {
     "name": "walterwoshid/dissect",
     "description": "A set of tools for lexical and syntactical analysis written in pure PHP - Fork by WalterWoshid",
-    "version": "2.0.0",
     "type": "library",
     "homepage": "https://github.com/jakubledl/dissect",
     "license": "MIT",
