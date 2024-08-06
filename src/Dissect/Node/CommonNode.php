@@ -19,7 +19,7 @@ class CommonNode implements Node
      * Constructor.
      *
      * @param array $attributes The attributes of this node.
-     * @param array $nodes The nodes of this node.
+     * @param array $nodes The children of this node.
      */
     public function __construct(array $attributes = [], array $nodes = [])
     {
